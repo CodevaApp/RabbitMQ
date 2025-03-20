@@ -1,0 +1,23 @@
+package sender
+
+import (
+	"context"
+
+	"github.com/codevaapp/rabbitmq"
+	amqp "github.com/rabbitmq/amqp091-go"
+)
+
+// Sender embeds RabbitMQClient and provides methods for sending messages
+type Sender struct {
+	rabbitmq.RabbitMQClient // Embed the RabbitMQClient struct
+}
+
+func (rc *Sender) Send(ctx context.Context, exchange, routingKey string, options amqp.Publishing) error {
+	return rc.Ch.PublishWithContext(ctx,
+		exchange,
+		routingKey,
+		true,
+		false,
+		options,
+	)
+}
