@@ -38,22 +38,22 @@ func NewRabbitMQClient(options RabbitMQClientOptions) (*RabbitMQClient, error) {
 
 // connect tries to connect to RabbitMQ server up to retryAttempt times if
 // a connection error occurs.
-func (rmq *RabbitMQClient) connect() error {
+func (rc *RabbitMQClient) connect() error {
 	var err error
 
-	rmq.conn, err = amqp.Dial(rmq.connURL)
+	rc.conn, err = amqp.Dial(rc.connURL)
 	if err != nil {
 		log.Error("Error creating connection", err.Error())
 		return err
 	}
 
-	rmq.ch, err = rmq.conn.Channel()
+	rc.ch, err = rc.conn.Channel()
 	if err != nil {
 		log.Error("Error creating a channel", err.Error())
 		return err
 	}
 
-	rmq.errCh = rmq.conn.NotifyClose(make(chan *amqp.Error))
+	rc.errCh = rc.conn.NotifyClose(make(chan *amqp.Error))
 
 	return nil
 }
