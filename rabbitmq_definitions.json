@@ -1,0 +1,58 @@
+{
+    "vhosts": [
+        {
+            "name": "/"
+        },
+        {
+            "name": "codeva"
+        }
+    ],
+    "permissions": [
+        {
+            "user": "admin",
+            "vhost": "codeva",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        }
+    ],
+    "exchanges": [
+        {
+            "name": "customer_events",
+            "vhost": "codeva",
+            "type": "fanout",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        },
+        {
+            "name": "customer_callbacks",
+            "vhost": "codeva",
+            "type": "direct",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        }
+    ],
+    "queues": [
+        {
+            "name": "customers_created",
+            "vhost": "codeva",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {}
+        }
+    ],
+    "bindings": [
+        {
+            "source": "customers_events",
+            "vhost": "codeva",
+            "destination": "customers_created",
+            "destination_type": "queue",
+            "routing_key": "customers.created.*",
+            "arguments": {}
+        }
+    ]
+}
